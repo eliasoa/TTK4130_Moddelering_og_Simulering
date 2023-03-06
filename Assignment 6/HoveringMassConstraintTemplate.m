@@ -21,16 +21,16 @@ ddq = [ddpm1;ddpm2];
 z = sym('z');
 
 % Generalized forces
-Q = [];
+Q = [u;0;0;0];
 % Kinetic energy (function of q and dq)
-T = ;
+T = 1/2*dpm1'*m1*dpm1 + 1/2*dpm2'*m2*dpm2;
 % Potential energy
-V = ;
+V = m1*g*[0 0 1]*pm1 + m2*g*[0 0 1]*pm2;
 % Lagrangian (function of q and dq)
-Lag = ;
+Lag = T-V;
 % Constraint
 dpm  = pm1 - pm2; % difference of positions
-C = ;
+C = 1/2*((dpm'*dpm)-L^2);
 
 % Derivatives of constrained Lagrangian
 Lag_q = simplify(jacobian(Lag,q)).';
@@ -41,7 +41,7 @@ C_q = simplify(jacobian(C,q)).';
 
 % Matrices for problem 1
 M = Lag_dqdq;
-b = [];
+b = Q+Lag_q-z*C_q;
 
 % Matrices for problem 2
 Mimplicit = [];
